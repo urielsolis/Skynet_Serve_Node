@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const token_1 = __importDefault(require("../clases/token"));
+const jsonwebtoken_1 = require("jsonwebtoken");
+exports.verificaToken = (req, res, next) => {
+    const userToken = req.get('x-token') || '';
+    token_1.default.comprobarToken(userToken)
+        .then((decoded) => {
+        console.log('Decoded', jsonwebtoken_1.decode);
+        req.usuario = decoded.usuario;
+        next();
+    })
+        .catch(err => {
+        res.json({
+            ok: false,
+            mensaje: 'Token no es correcto'
+        });
+    });
+};
